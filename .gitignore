@@ -1,0 +1,20 @@
+# Local data and generated study output
+database-1M_filtered.duckdb
+database-1M_filtered.duckdb.*
+results/
+
+# renv-generated local state
+renv/library/
+renv/staging/
+renv/cache/
+renv/local/
+
+# R session state
+.Rhistory
+.RData
+.Ruserdata
+*.Rproj.user/
+
+# Local OpenCode configuration links
+.opencode
+opencode.jsonc
