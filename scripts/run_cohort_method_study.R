@@ -4,6 +4,7 @@ covariate_settings <- FeatureExtraction::createDefaultCovariateSettings(
   excludedCovariateConceptIds = c(1308216, 974166),
   addDescendantsToExclude = TRUE
 )
+
 cohort_method_data <- CohortMethod::getDbCohortMethodData(
   connectionDetails = details,
   cdmDatabaseSchema = cdm_schema,
@@ -17,17 +18,13 @@ cohort_method_data <- CohortMethod::getDbCohortMethodData(
   getDbCohortMethodDataArgs =
     CohortMethod::createGetDbCohortMethodDataArgs(
       covariateSettings = covariate_settings,
-      removeDuplicateSubjects = "keep first, truncate to second",
+      removeDuplicateSubjects = "keep first",
       firstExposureOnly = TRUE,
       washoutPeriod = 365,
       restrictToCommonPeriod = TRUE,
       nestingCohortId = NULL
     )
 )
-# CohortMethod::saveCohortMethodData(
-#   cohortMethodData = cohort_method_data,
-#   file = fs::path(results_dir, "cohort_method_data.zip")
-# )
 
 population <- CohortMethod::createStudyPopulation(
   cohortMethodData = cohort_method_data,
@@ -68,14 +65,6 @@ matched_arm_sizes <- matched |>
 balance <- CohortMethod::computeCovariateBalance(
   population = matched,
   cohortMethodData = cohort_method_data
-)
-
-mdrr <- CohortMethod::computeMdrr(
-  population = matched,
-  alpha = 0.05,
-  power = 0.8,
-  twoSided = TRUE,
-  modelType = "logistic"
 )
 
 fit <- CohortMethod::fitOutcomeModel(
